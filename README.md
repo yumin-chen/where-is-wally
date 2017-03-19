@@ -1,4 +1,4 @@
-**Where Is Wally -- Image Processing Assignment**
+**Where Is Wally -- Image Processing Object Recognition**
 ========================
 
 
@@ -15,9 +15,12 @@ Wally ([Wally.png](Wally.png)) is lost at a Cosplay convention ([Where.jpg](Wher
 
 - Challenge : Using this method on the full-size image ([WhereLarge.jpg](WhereLarge.jpg)) is painfully slow. See if you can find Wally without using the template image but instead by recognising Wally and his stylish red and white T-shirt. (try colour segmentation then morphology here);
 
-- Refer to the general guidelines to maximise your marks;
 
-- Submit a single m-file here.
+Results
+------------------------
+| Correlation Matching | Color Segmentation |
+| :---: | :---: |
+| ![Correlation Matching](results/correlation-matching.bmp) | ![Color Segmentation](results/color-segmentation.jpg) |
 
 
 Licensing
