@@ -28,17 +28,20 @@ image = im2double(imread('Where.jpg'));
 imageLarge = im2double(imread('WhereLarge.jpg'));
 template = im2double(imread('Wally.png'));
 
+% Get image size
+[ih, iw, ~] = size(image);
+[ilh, ilw, ~] = size(imageLarge);
+r = ilw / iw;
+
 % Use Correlation to find where Wally is
 [x, y, w, h] = correlation(image, template);
-
-figure;
-imshow(image);
+figure, imshow(image), title('Correlation Matching');
 rectangle('Position', [x, y, w, h], 'EdgeColor', 'r', 'LineWidth', 2);
 
 % Use color segmentation to find where Wally is 
 output = colorSegmentation(imageLarge);
-figure;
-imshow(output);
+figure; imshow(output), title('Color Segmentation');
+rectangle('Position', [x*r, y*r, w*r, h*r], 'EdgeColor', 'r', 'LineWidth', 2);
 end
 
 
@@ -47,6 +50,9 @@ end
 % Correlation Matching
 % ------------------------
 function [x, y, w, h] = correlation(image, template)
+% This function uses correlation matching to find Wally's position. 
+% It returns the x, y coordinates of the found object, and its width and
+% height.
 
 imageGray = rgb2gray(image);
 templateGray = rgb2gray(template);
@@ -86,6 +92,11 @@ end
 % Color Segmentation
 % ------------------------
 function output = colorSegmentation(image)
+% This function uses color segmentation to find Wally's position. It first
+% converts the image to HSV color space and use the Hue and Saturation to
+% segment the red and write stripes. Then a vertical linear structruring
+% element is used to dilate the stripes and find their overlapped area so
+% the result will be only connected red and white area.
 
 [ih, iw, ~] = size(image);
 
@@ -99,7 +110,6 @@ v = imageHsv(:, :, 3);
 redStripes = ((h < 0.05) | (h > 0.95)) & (s > 0.4) & (v > 0.4);
 whiteStripes = (s < 0.2) & (v > 0.9);
 
-
 % Create vertical (90 degree) linear structuring element
 se = strel('line', ih * 0.01, 90); 
 
@@ -110,12 +120,17 @@ whiteDilated = imdilate(whiteStripes, se);
 % Get their overlapped area
 roi = redDilated & whiteDilated;
 
+% Remove smaller or bigger components that are not Wally
 roi = bwareaopen(roi, floor((iw/108) * (ih/108)));
+bigger = bwareaopen(roi, floor((iw/50) * (ih/50)));
+roi = roi - bigger;
+
+% Purify Wally
 roi = roi & (redStripes | whiteStripes);
+roi = imdilate(roi, se);
+roi = bwareaopen(roi, 10);
 
-
-
-
+% Restore to RGB colored image
 r = image(:, :, 1);
 g = image(:, :, 2);
 b = image(:, :, 3);
@@ -127,7 +142,6 @@ output(:, :, 3) = roi .* b;
 
 %structElement = strel('square', 3);
 %eroded = imerode(output, structElement);
-
 
 %output = imfilter(output, fspecial('prewitt'), 'replicate');
 
