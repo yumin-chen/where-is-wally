@@ -35,7 +35,7 @@ imshow(image);
 rectangle('Position', [x, y, w, h], 'EdgeColor', 'r', 'LineWidth', 2);
 
 % Use color segmentation to find where Wally is 
-output = colorSegmentation(image);
+output = colorSegmentation(im2double(imread('WhereLarge.jpg')));
 figure;
 imshow(output);
 end
@@ -92,13 +92,26 @@ h = imageHsv(:, :, 1);
 s = imageHsv(:, :, 2);
 v = imageHsv(:, :, 3);
 
-roi = ((h < 0.075) | (h > 0.925)) & (v > 0.20) & (s < 0.9);
+% Segment using color
+redStripes = ((h < 0.05) | (h > 0.95)) & (s > 0.5) & (v > 0.5);
+whiteStripes = (s < 0.2) & (v > 0.8);
+
+% Dilate the red stripe vertically 
+se = strel('line', 11, 90);
+redStripes = imdilate(redStripes, se);
+
+roi = redStripes & whiteStripes;
+roi = imdilate(roi, se);
+
+roi = bwareaopen(roi, 50);
+
+
+
+
 
 r = image(:, :, 1);
 g = image(:, :, 2);
 b = image(:, :, 3);
-
-roi = bwareaopen(roi, 50);
 
 output = image;
 output(:, :, 1) = roi .* r;
