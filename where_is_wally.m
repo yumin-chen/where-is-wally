@@ -104,14 +104,14 @@ whiteStripes = (s < 0.2) & (v > 0.9);
 se = strel('line', ih * 0.01, 90); 
 
 % Dilate the stripes vertically 
-redStripes = imdilate(redStripes, se);
-whiteStripes = imdilate(whiteStripes, se);
+redDilated = imdilate(redStripes, se);
+whiteDilated = imdilate(whiteStripes, se);
 
 % Get their overlapped area
-roi = redStripes & whiteStripes;
+roi = redDilated & whiteDilated;
 
-roi = bwareaopen(roi, floor(iw/20));
-
+roi = bwareaopen(roi, floor((iw/108) * (ih/108)));
+roi = roi & (redStripes | whiteStripes);
 
 
 
