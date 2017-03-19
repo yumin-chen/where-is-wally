@@ -20,7 +20,7 @@ Results
 ------------------------
 | Correlation Matching | Color Segmentation |
 | :---: | :---: |
-| ![Correlation Matching](results/correlation-matching.bmp) | ![Color Segmentation](results/color-segmentation.jpg) |
+| ![Correlation Matching](results/correlation-matching.jpg) | ![Color Segmentation](results/color-segmentation.jpg) |
 
 
 Licensing
