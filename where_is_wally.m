@@ -25,6 +25,7 @@ close all;  % Close all sub-windows
 
 % Read images
 image = im2double(imread('Where.jpg'));
+imageLarge = im2double(imread('WhereLarge.jpg'));
 template = im2double(imread('Wally.png'));
 
 % Use Correlation to find where Wally is
@@ -35,7 +36,7 @@ imshow(image);
 rectangle('Position', [x, y, w, h], 'EdgeColor', 'r', 'LineWidth', 2);
 
 % Use color segmentation to find where Wally is 
-output = colorSegmentation(im2double(imread('WhereLarge.jpg')));
+output = colorSegmentation(imageLarge);
 figure;
 imshow(output);
 end
@@ -86,6 +87,8 @@ end
 % ------------------------
 function output = colorSegmentation(image)
 
+[ih, iw, ~] = size(image);
+
 % Convert to HSV color space 
 imageHsv = rgb2hsv(image);
 h = imageHsv(:, :, 1);
@@ -93,17 +96,21 @@ s = imageHsv(:, :, 2);
 v = imageHsv(:, :, 3);
 
 % Segment using color
-redStripes = ((h < 0.05) | (h > 0.95)) & (s > 0.5) & (v > 0.5);
-whiteStripes = (s < 0.2) & (v > 0.8);
+redStripes = ((h < 0.05) | (h > 0.95)) & (s > 0.4) & (v > 0.4);
+whiteStripes = (s < 0.2) & (v > 0.9);
 
-% Dilate the red stripe vertically 
-se = strel('line', 11, 90);
+
+% Create vertical (90 degree) linear structuring element
+se = strel('line', ih * 0.01, 90); 
+
+% Dilate the stripes vertically 
 redStripes = imdilate(redStripes, se);
+whiteStripes = imdilate(whiteStripes, se);
 
+% Get their overlapped area
 roi = redStripes & whiteStripes;
-roi = imdilate(roi, se);
 
-roi = bwareaopen(roi, 50);
+roi = bwareaopen(roi, floor(iw/20));
 
 
 
