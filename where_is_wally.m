@@ -3,7 +3,7 @@
 % Where's Wally
 % ========================
 %
-% Copyright (C): Yumin Chen  D16123341
+% Copyright (C): Chen Yumin
 %
 % 04/Mar/2017
 %
@@ -18,7 +18,8 @@
 % Algorithm
 % ------------------------
 % This script demonstrates using correlation matching and color
-% segmentation to find desired object (Wally) in an image.
+% segmentation to find desired object (Wally) in an image. The detailed
+% algorithm documentation outline can be found under each function.
 % -------------------------------------------------------------------------
 
 function where_is_wally
@@ -57,9 +58,11 @@ end
 % Correlation Matching
 % ------------------------
 function [x, y, w, h] = correlation(image, template)
-% This function uses correlation matching to find Wally's position. 
-% It returns the x, y coordinates of the found object, and its width and
-% height.
+% This function uses correlation matching to find Wally's position. It
+% loops through the image in an attempt to find the object template. For
+% each position, the difference is calculated and recorded and the position
+% with minimum difference is returned. It returns the x, y coordinates of 
+% the found object, and its width and height.
 
 imageGray = rgb2gray(image);
 templateGray = rgb2gray(template);
@@ -148,6 +151,3 @@ output(:, :, 2) = roi .* g;
 output(:, :, 3) = roi .* b;
 
 end
-
-
-

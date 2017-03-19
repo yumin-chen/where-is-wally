@@ -4,7 +4,13 @@
 
 Introduction
 ------------------------
-This is originally an assignment from Image Processing module -- Where Is Wally. This project aims to locate an object from an image.
+This script demonstrates using correlation matching and color segmentation to find desired object (Wally) in an image. This is originally an assignment from Image Processing module -- Where Is Wally. This project aims to locate an object from an image.
+
+- Correlation Matching:  
+    This method loops through the image in an attempt to find the object template. For each location, the difference between the template and the neighborhood is calculated and recorded. The location with minimum difference is returned.
+
+- Color Segmentation:
+   This method firstly converts the image to HSV color space and use the Hue and Saturation to segment the red and write stripes. Then a vertical linear structuring element is used to dilate the stripes and find their overlapped area so the result will be only connected red and white area.
 
 
 Scenario
