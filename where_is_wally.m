@@ -7,11 +7,18 @@
 %
 % 04/Mar/2017
 %
+%
 % Introduction
 % ------------------------
 % This is an assignment from Image Processing module. The purpose of this
 % program is to find a desired object from an image. In this example, the
 % cartoon character Wally is our desired object. 
+%
+%
+% Algorithm
+% ------------------------
+% This script demonstrates using correlation matching and color
+% segmentation to find desired object (Wally) in an image.
 % -------------------------------------------------------------------------
 
 function where_is_wally
@@ -139,11 +146,6 @@ output = image;
 output(:, :, 1) = roi .* r;
 output(:, :, 2) = roi .* g;
 output(:, :, 3) = roi .* b;
-
-%structElement = strel('square', 3);
-%eroded = imerode(output, structElement);
-
-%output = imfilter(output, fspecial('prewitt'), 'replicate');
 
 end
 
