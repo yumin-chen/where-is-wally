@@ -3,7 +3,7 @@
 
 
 ## Introduction
-This script demonstrates using correlation matching and color segmentation to find desired object (Wally) in an image. This project aims to locate an object from an image. Please see [Template Matching and Color Segmentation in Image Processing: Where's Wally?](http://chenyumin.com/p/template-matching-and-color-segmentation-in-image-processing-wheres-wally).
+This repository is the source code for my blog post [Template Matching and Color Segmentation in Image Processing: Where's Wally?](http://chenyumin.com/p/template-matching-and-color-segmentation-in-image-processing-wheres-wally). This script demonstrates using correlation matching and color segmentation to find desired object (Wally) in an image. This project aims to locate an object from an image.
 
 - Correlation Matching:  
     This method loops through the image in an attempt to find the object template. For each location, the difference between the template and the neighborhood is calculated and recorded. The location with minimum difference is returned.
